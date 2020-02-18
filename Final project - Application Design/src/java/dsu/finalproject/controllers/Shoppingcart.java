@@ -1,30 +1,25 @@
-package dsu.finalproject.controllers;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import dsu.finalproject.DBConnection;
-import dsu.finalproject.models.User;
-import dsu.finalproject.models.UserService;
+package dsu.finalproject.controllers;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.catalina.Session;
 
 /**
  *
  * @author carlos.chiquillo
  */
-public class UserController extends HttpServlet {
+public class Shoppingcart extends HttpServlet {
 
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,7 +32,18 @@ public class UserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Shoppingcart</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Shoppingcart at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,51 +72,7 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation = request.getParameter("operation");
-        switch (operation) {
-            case "register":
-                User user = new User(request.getParameter("username"), request.getParameter("email"), request.getParameter("password"));
-                addUserOperation(user);
-                response.sendRedirect("login.jsp");
-                //listUsers(request, response);
-                break;
-                
-            case "login":
-                    String email = request.getParameter("email");
-                    String password = request.getParameter("password");
-                    if(UserService.login(email, password)){
-                         response.sendRedirect("productcategories.jsp");
-                    }else{
-                         response.sendRedirect("login.jsp");
-                    }
-             
-            break;
-            default:
-                errorPage(request, response);
-                break;
-        }
-    }
-
-    private void addUserOperation(User user) {
-        new UserService().addUser(user);
-        return;
-    }
-
-    public void listUsers(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<User> listUsers = new ArrayList<>();
-        listUsers = new UserService().listUsers();
-        request.setAttribute("listUsers", listUsers);
-        request.setAttribute("title", "List of users");
-        request.getRequestDispatcher("listUsers.jsp").forward(request, response);
-
-    }
-
-    public void errorPage(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setAttribute("title", "Error page");
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**
